@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,17 +21,21 @@ public class MainActivity2 extends AppCompatActivity {
     private int i = 0;
     private Button button;
     private String s;
+    Handler handler = new Handler();
 
-    private void generateRandomNumber() {
+    private void generateRandomNumber() throws InterruptedException {
         Random rand = new Random();
         nbAleatoire = rand.nextInt(26) + 1;
+
     }
 
-    public void gestionDuClic(View view) {
+    public void gestionDuClic(View view) throws InterruptedException {
         button.setText("Prononce");
-        if (i < 3) {
-            generateRandomNumber(); // Définiton du nombre aleéatoire
+        do {
+
+            generateRandomNumber(); // Définiton du nombre aléatoire
 //                // Lecture du texte en fonction du chiffre random
+
             switch (nbAleatoire) {
                 case 1:
                     // Lancer la lecture du morceau a.mp3
@@ -141,45 +147,60 @@ public class MainActivity2 extends AppCompatActivity {
                     getResources().getIdentifier(tagAttendu, "raw", getPackageName()));
             mediaPlayer.start();
             Log.i(TAG, "tagAttend: " + tagAttendu);
+
+
             i++;
-        } else {
-            Toast.makeText(this, "Partie finie", Toast.LENGTH_SHORT).show();
-            nouveauTest();
-        }
-    }
-
-    public void nouveauTest(){
-        button.setText("Nouveau Test");
-        i=0;
-    }
-
-    public void reponseClic(View view) {
-        ImageView imageViewPresse = (ImageView) view;
-        tag = imageViewPresse.getTag().toString();
-        Log.i(TAG, "gestionDuClic: " + tag);
-        if (tag.equals(tagAttendu)) {
-            s = s + 1; // ou s++
-            Log.i(TAG, "myRandom: " + s);
-            Toast.makeText(this, "Bonne réponse", Toast.LENGTH_SHORT).show();
-
-        } else {
-            Toast.makeText(this, "Essai encore !", Toast.LENGTH_SHORT).show();
-        }
-        }
-
-
-        /// Mettre une pause pour attendre le clic de l'utilisateur
-        public void buttonDelay (View view){
             Runnable runnable = new Runnable() {
+
                 @Override
                 public void run() {
-
+                    handler.postDelayed(runnable, 3000);
                 }
             };
-        }
+
+//            public void run_codes () {
+//                handler.postDelayed(runnable, 3000);
+//
+//            }
+        }  while (i < 26);
 
 
-        /// Après le clic de l'utilisateur vérifier s'il a bon et recommencer
+//
+
+            if ( i == 26){
+
+                    Toast.makeText(this, "Partie finie", Toast.LENGTH_SHORT).show();
+                    nouveauTest();
+                }}
+
+
+                public void nouveauTest () {
+
+                    button.setText("Nouveau Test");
+                    i = 0;
+                }
+
+                public void reponseClic (View view){
+                    ImageView imageViewPresse = (ImageView) view;
+                    tag = imageViewPresse.getTag().toString();
+                    Log.i(TAG, "gestionDuClic: " + tag);
+                    if (tag.equals(tagAttendu)) {
+                        s = s + 1; // ou s++
+                        Log.i(TAG, "myRandom: " + s);
+                        Toast.makeText(this, "Bonne réponse", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(this, "Essai encore !", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+//        / Mettre une pause pour attendre le clic de l'utilisateur
+
+
+
+
+                /// Après le clic de l'utilisateur vérifier s'il a bon et recommencer
 //        Log.i(TAG,"tagClique: "+tag);
 //        Log.i(TAG,"tagAttendu: "+tagAttendu);
 
@@ -194,12 +215,17 @@ public class MainActivity2 extends AppCompatActivity {
 //
 
 
-        @Override
-        protected void onCreate (Bundle savedInstanceState){
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main2);
+                @Override
+                protected void onCreate (Bundle savedInstanceState){
+                    super.onCreate(savedInstanceState);
+                    setContentView(R.layout.activity_main2);
 //        myRandom();
-        button = findViewById(R.id.proId);
+                    button = findViewById(R.id.proId);
 
-        }
+
+
+
+                }
+
+
     }
