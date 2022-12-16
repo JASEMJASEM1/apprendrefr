@@ -289,7 +289,6 @@
         android:id="@+id/proId"
         android:layout_width="match_parent"
         android:layout_height="67dp"
-        android:onClick="gestionDuClic"
-        android:text="pronounce" />
+        android:text="prononce" />
 
 </LinearLayout>
